@@ -1,0 +1,177 @@
+use torneo_champions
+
+dbs
+
+--- INICIO ---
+
+1. Equipos
+
+	// Real Madrid & Borussia Dortmund
+	db.equipos.insert([
+		{
+		  _id: "RM01",
+		  nombre: "Real Madrid",
+		  país: "España",
+		  entrenador: "id_entrenador_real",
+		  jugadores: ["id_kross", "id_modric", "id_vinicius"],
+		  fase_actual: "Final"
+		},
+		{
+		  _id: "BD02",
+		  nombre: "Borussia Dortmund",
+		  país: "Alemania",
+		  entrenador: "id_entrenador_dortmund",
+		  jugadores: ["id_sancho", "id_reus", "id_hummels"],
+		  fase_actual: "Final"
+		}
+	]);
+
+2. Jugadores (Deportistas)
+
+
+	// Jugadores de Real Madrid & Borussia Dortmund	
+	db.jugadores.insert([
+		{
+		  _id: "id_kross",
+		  nombre: "Tony Kross",
+		  edad: 34,
+		  nacionalidad: "Alemana",
+		  posición: "Mediocentro",
+		  equipo: "RM01"
+		},
+		{
+		  _id: "id_modric",
+		  nombre: "Luka Modric",
+		  edad: 38,
+		  nacionalidad: "Croata",
+		  posición: "Mediocentro",
+		  equipo: "RM01"
+		},
+		{
+		  _id: "id_vinicius",
+		  nombre: "Vinicius Junior",
+		  edad: 23,
+		  nacionalidad: "Brasileña",
+		  posición: "Delantero",
+		  equipo: "RM01"
+		},
+		{
+		  _id: "id_sancho",
+		  nombre: "Jadon Sancho",
+		  edad: 24,
+		  nacionalidad: "Inglesa",
+		  posición: "Delantero",
+		  equipo: "BD02"
+		},
+		{
+		  _id: "id_reus",
+		  nombre: "Marco Reus",
+		  edad: 34,
+		  nacionalidad: "Alemana",
+		  posición: "Mediocentro",
+		  equipo: "BD02"
+		},
+		{
+		  _id: "id_hummels",
+		  nombre: "Mats Hummels",
+		  edad: 35,
+		  nacionalidad: "Alemana",
+		  posición: "Defensa",
+		  equipo: "BD02"
+		}
+	]);
+	
+// Verificamos la insercion de los datos	
+	db.equipos.find().pretty()
+	
+3. Entrenadores
+
+
+	// Entrenadores de Real Madrid & Borussia Dortmund
+	db.entrenadores.insert([
+		{
+		  _id: "id_entrenador_real",
+		  nombre: "Carlo Ancelotti",
+		  edad: 64,
+		  nacionalidad: "Italiana",
+		  historial_equipos: ["PSG", "Chelsea", "Juventus", "Parma", "AC Milan", "Bayern", "Everton", "Real Madrid"]
+		},
+		{
+		  _id: "id_entrenador_dortmund",
+		  nombre: "Marco Rose",
+		  edad: 46,
+		  nacionalidad: "Alemana",
+		  historial_equipos: ["Borussia Mönchengladbach", "RB Salzburg"]
+		}
+    ]);
+
+4. Árbitros
+
+	db.arbitros.insert({
+		  _id: "id_arbitro_final",
+		  nombre: "Szymon Marciniak",
+		  edad: 47,
+		  nacionalidad: "Polaca",
+		  partidos_arbitrados: 312		
+	});
+
+5. Encuentros Deportivos
+
+	db.encuentrodep.insert({
+		  _id: "id_partido_final",
+		  fecha: new Date("2024-05-31"),
+		  fase: "Final",
+		  equipo_local: "RM01",
+		  equipo_visitante: "BD02",
+		  árbitro: "id_arbitro_final",
+		  estadio: "Estadio de Wembley"
+		});
+	
+6. Resultado de la final del partido
+	
+	db.resultados.insert({
+		  encuentro: "id_partido_final",
+		  goles_equipo_local: 1,
+		  goles_equipo_visitante: 3,
+		  detalles: [
+			{ minuto: 30, autor: "id_reus", tipo: "gol" },
+			{ minuto: 60, autor: "id_sancho", tipo: "gol" },
+			{ minuto: 75, autor: "id_vinicius", tipo: "gol" },
+			{ minuto: 89, autor: "id_hummels", tipo: "gol" }
+		  ]
+		});
+		
+--- FIN ---
+		
+// CRUD	
+
+1. Crear - Insertar un nuevo árbitro 
+
+	db.arbitros.insert({
+	  _id: "id_arbitro_nuevo",
+	  nombre: "Daniel Caicedo",
+	  edad: 27,
+	  nacionalidad: "Colombiana",
+	  partidos_arbitrados: 200
+	});
+
+2. Leer - Consultar todos los jugadores del equipo "Real Madrid"
+
+	db.jugadores.find({
+	  equipo: "RM01"
+	}).pretty();
+
+3. Actualizar - Modificar la fase actual del Borussia Dortmund
+
+	db.equipos.updateOne(
+	  { _id: "BD02" },
+	  { $set: { fase_actual: "Campeon de la Champions 2024" } }
+	);
+
+4.  - Borrar un resultado de partido específico
+
+	db.resultados.deleteOne({
+	  encuentro: "id_partido_final"
+	});
+	
+	db.dropDatabase()
