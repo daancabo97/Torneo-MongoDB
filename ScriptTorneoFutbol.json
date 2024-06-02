@@ -1,13 +1,15 @@
 use torneo_champions
 
-dbs
+show dbs
 
 --- INICIO ---
+
+db.createCollection("equipos")
 
 1. Equipos
 
 	// Real Madrid & Borussia Dortmund
-	db.equipos.insert([
+	db.equipos.insertMany([
 		{
 		  _id: "RM01",
 		  nombre: "Real Madrid",
@@ -26,11 +28,12 @@ dbs
 		}
 	]);
 
-2. Jugadores (Deportistas)
+2. Jugadores
 
+db.createCollection("jugadores")
 
 	// Jugadores de Real Madrid & Borussia Dortmund	
-	db.jugadores.insert([
+	db.jugadores.insertMany([
 		{
 		  _id: "id_kross",
 		  nombre: "Tony Kross",
@@ -84,11 +87,13 @@ dbs
 // Verificamos la insercion de los datos	
 	db.equipos.find().pretty()
 	
+db.createCollection("entrenadores")	
+	
 3. Entrenadores
 
 
 	// Entrenadores de Real Madrid & Borussia Dortmund
-	db.entrenadores.insert([
+	db.entrenadores.insertMany([
 		{
 		  _id: "id_entrenador_real",
 		  nombre: "Carlo Ancelotti",
@@ -105,9 +110,11 @@ dbs
 		}
     ]);
 
+db.createCollection("arbitros")
+
 4. Árbitros
 
-	db.arbitros.insert({
+	db.arbitros.insertOne({
 		  _id: "id_arbitro_final",
 		  nombre: "Szymon Marciniak",
 		  edad: 47,
@@ -115,9 +122,11 @@ dbs
 		  partidos_arbitrados: 312		
 	});
 
+db.createCollection("encuentrosdep")
+
 5. Encuentros Deportivos
 
-	db.encuentrodep.insert({
+	db.encuentrodep.insertOne({
 		  _id: "id_partido_final",
 		  fecha: new Date("2024-05-31"),
 		  fase: "Final",
@@ -127,9 +136,11 @@ dbs
 		  estadio: "Estadio de Wembley"
 		});
 	
+db.createCollection("resultados")	
+	
 6. Resultado de la final del partido
 	
-	db.resultados.insert({
+	db.resultados.insertOne({
 		  encuentro: "id_partido_final",
 		  goles_equipo_local: 1,
 		  goles_equipo_visitante: 3,
@@ -147,13 +158,19 @@ dbs
 
 1. Crear - Insertar un nuevo árbitro 
 
-	db.arbitros.insert({
+	db.arbitros.insertOne({
 	  _id: "id_arbitro_nuevo",
 	  nombre: "Daniel Caicedo",
 	  edad: 27,
 	  nacionalidad: "Colombiana",
 	  partidos_arbitrados: 200
 	});
+
+db.arbitros.updateOne(
+  { _id: "id_arbitro_final" },
+  { $set: { edad: 48 } }
+);
+
 
 2. Leer - Consultar todos los jugadores del equipo "Real Madrid"
 
